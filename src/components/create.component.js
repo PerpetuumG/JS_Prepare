@@ -1,35 +1,35 @@
-import {Component} from "../core/component";
-import {Form} from "../core/form";
-import {Validators} from "../core/validators";
+import { Component } from '../core/component'
+import { Form } from '../core/form'
+import { Validators } from '../core/validators'
+import { apiService } from '../services/api.service'
 
 export class CreateComponent extends Component {
-    constructor(id) {
-        super(id)
-    }
+  constructor(id) {
+    super(id)
+  }
 
-    init() {
-        this.$el.addEventListener('submit', submitHandler.bind(this))
+  init() {
+    this.$el.addEventListener('submit', submitHandler.bind(this))
 
-        this.form = new Form(this.$el, {
-            title: [Validators.required],
-            fulltext: [Validators.required, Validators.minLength(10)]
-        })
-    }
+    this.form = new Form(this.$el, {
+      title: [Validators.required],
+      fulltext: [Validators.required, Validators.minLength(10)]
+    })
+  }
 }
 
-function submitHandler(event) {
-    event.preventDefault()
+async function submitHandler(event) {
+  event.preventDefault()
 
-    if (this.form.isVaLid()) {
-
-
-        const formData = {
-            type: this.$el.type.value,
-            ...this.form.value()
-        }
-
-        this.form.clear()
-
-        console.log('Submit', formData)
+  if (this.form.isValid()) {
+    const formData = {
+      type: this.$el.type.value,
+      date: new Date().toLocaleDateString(),
+      ...this.form.value()
     }
+
+    await apiService.createPost(formData)
+    this.form.clear()
+    alert('Запись создана в базе данных')
+  }
 }
