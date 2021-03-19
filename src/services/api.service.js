@@ -43,4 +43,4 @@ async function useRequest(request) {
   return await response.json()
 }
 
-export const apiService = new ApiService('https://wfm-js-1f2c3-default-rtdb.firebaseio.com/')
+export const apiService = new ApiService('https://wfm-js.firebaseio.com')
